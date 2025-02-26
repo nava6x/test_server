@@ -1,0 +1,163 @@
+DEPENDENCIES
+http
+express
+cors
+socket.io
+mongoose
+firebase-admin
+
+
+WSSER STUCTRUE: 
+folder type 2 dbhandler userhandler
+and main file called soc_server.js
+
+soc_server.js
+
+DEPENDENCIES
+
+
+IMPORTS
+1 (SERVER REQ AND HTTP VIA WBS)
+import express and http and socket io for make a http 
+request via express server. and switch the http to 
+web socket and set cors policy via import cors.
+
+2 (USER STATUS)
+import the precompleted function setUser and DeleteUser
+for make the online and offline status for managage tid.
+
+3 (DATABASE AND CLIST)
+import setdb and clistupdates for makes the geted data from 
+user and save the data into the database perminatly.
+
+4 (SAVE DATA)
+importing norset replyset imgset imgrplset to get a schema
+for a data and save the data in the database
+
+FUNCTIONS AND ALCORITHAMS AND VARIABLES
+Saving Functions
+1 (MAKE A SERVER)
+making a http server via express and use cors for url 
+policy and also change the http server to web socket 
+
+2 (SAVING FUNCTIONS)
+*NORSET [create] - Saving
+1. makes a new set of data schemed set for saving and save
+the data to the needed database 
+Core Concept: Save the listned default message to the 
+database and default it will work twice for save as sender 
+and receiver type and update the clist for makes the user 
+is the index of the clist. [data saving is creating]
+
+*RPLSETS [create] - Saving
+2. is doing the same work of nor set and and creating new
+data into the database
+
+*WTCSETS [update] - Saving
+3. is update the each document wtc to true and isn't contain
+updating the clist Core Concept: save the message status to
+seen
+
+*IMGSETS - Indication and update clist
+4. this img set for update the clist for make a index the 
+img sender
+
+*IMGREPLYSETS - [create] - Saving
+5. this function is doing the same work of RPLSETS, NORSET
+saving the new  data into the needted database.
+
+-----
+
+Solid Variables
+*StrictID
+1. for having a id and store as temp for avoid Saving Functions
+save documents multiple times
+
+----
+
+IO Evenets Functions
+*IO Connection
+1. get the socket of the newly connected socket connection
+2. listen usrconn for save the connections in the usrconn
+emit time frontend will gave the pid and add (the address of pid)
+and save the userpid data to the  user_socket_connection
+firebase via setUser function
+3. inside of the trycatch connect or open a database connection
+i mean established the mongodb connection state.
+
+*EVENT LISTENR AND EMITER - Saving and emit
+msgwy Event
+1. msgwy event listen by the socket.io connect at first
+and destructre the emitted json data
+
+2. makes a paths for save the clist and if we update or
+make a new alorithemd clist manager. and then isn't needted
+3. with the if and else if, else statement checks the
+emitted msgwy message type
+
+type: nor (the working of nor and all type messages into the msgwy)
+if the msg is type nor first will make 2 type json data 
+structures first for emit (to the sender and receiver)
+and another for saved as database and that work will gave
+to norsets function. inside of that that is, finished the
+gen the emit json body in 2 varitaions semit remit. prosses
+of the avoid the re document genaretion. a prosses of if else
+will happen. is it finished the next prossess real time data
+share the tid will check a active or inactive if is inactive
+the documents will share in the database the help of norsets
+and semits to the socket. if is active will remits to the
+receiver and  semits to the sender and save the document in
+base. not only this all kind of type the messages like
+img, replyimg, nor will happens like this but the values
+will change.
+
+*EVENT LISTENR AND EMITER - Realtime Indication
+
+msgdl Event
+1. will listen the event and destructre the data of the emitted
+json.
+2. check if the emitting is needed by the tid value.
+3. if is needed to emit. it will emit the document gl_id 
+to the specific user socket
+
+msgup Event
+*Will do the same prossess of the msgdl but emit a updated
+data with the gl_id.
+
+msgwtc Event
+1. listen the event destructre the event.
+2. it will send a Indication and the saving system too.
+calling the wtcsets function and save the seen to true
+in 2 types for sender and receiver. and also it have Strict mod
+for avoid resaveing the document and also tid checks. if the
+tid is active. will emit gl_id to msgwtcin event
+
+disconnect event for change the tid to inactive
+
+
+userhandler/userhand.js
+
+IMPORTS
+
+1. firebaseconnections
+
+Async Functions
+setUser
+this is for get the pid and socket.id also the add
+update the tid to the socket.id
+
+DeleteUser
+same prosses is DeleteUser of the setUser but change the
+tid to inactive
+
+dbhandler/clist 
+is contain the clist manager firebase and the connections
+
+dbhandler/mod
+is schema and module for the dbh.js
+
+dbhandler/msgsets 
+is a json bodystcure functions
+
+dbhandler./dbh.js 
+is a connection of a mongoose database
