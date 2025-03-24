@@ -5,12 +5,10 @@ const { createClient } = require("redis");
 
 const app = express();
 
-// Create a Redis client
+// Use your Upstash Redis URL and Token
 const redisClient = createClient({
-  socket: {
-    host: "127.0.0.1",  // Change if your Redis server is remote
-    port: 6379
-  }
+  url: "redis://default:AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA@relaxing-rhino-41560.upstash.io:6379",
+  password: "AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA"
 });
 
 redisClient.connect().catch(console.error);
@@ -19,11 +17,11 @@ redisClient.connect().catch(console.error);
 app.use(
   session({
     store: new RedisStore({ client: redisClient }),
-    secret: "your-secret-key",  // Replace with a strong secret
+    secret: "your-secret-key", // Change to a strong secret
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,  // Set to true in production with HTTPS
+      secure: false, // Set to true in production with HTTPS
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 // 1 day
     }
