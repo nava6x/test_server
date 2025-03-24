@@ -7,8 +7,8 @@ const app = express();
 
 // Use your Upstash Redis URL and Token
 const redisClient = createClient({
-  url: "redis://default:AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA@relaxing-rhino-41560.upstash.io:6379",
-  password: "AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA"
+  url: "",
+  password: ""
 });
 
 redisClient.connect().catch(console.error);
