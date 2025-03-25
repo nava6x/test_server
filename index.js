@@ -24,7 +24,7 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: "https://tst-frontend.onrender.com",
+  origin: ["http://localhost:3000", "https://tst-frontend.onrender.com"],
   credentials: true,
 }));
 
