@@ -30,8 +30,14 @@ app.use(cors({
 
 // Redis client with production-ready configuration
 const redisClient = new Redis({
-    url: 'https://relaxing-rhino-41560.upstash.io',
-    token: 'AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA',
+    host: "relaxing-rhino-41560.upstash.io", // TCP Proxy host
+    port: "6379", // TCP Proxy port
+    password: "AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA", // TCP Proxy password
+    tls: { rejectUnauthorized: false }, // Important for secure connection
+    retryStrategy: (times) => {
+      const delay = Math.min(times * 50, 2000);
+      return delay;
+    },
 });
 
 redisClient.on('error', (err) => console.error('Redis Client Error:', err));
