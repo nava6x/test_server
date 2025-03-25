@@ -57,7 +57,7 @@ app.use(
     rolling: true, // Reset maxAge on every request
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
       domain: process.env.COOKIE_DOMAIN || undefined,
