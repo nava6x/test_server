@@ -24,14 +24,14 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRT_URL,
+  origin: "http://localhost:3000",
   credentials: true,
 }));
 
 // Redis client with production-ready configuration
 const redisClient = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    url: 'https://relaxing-rhino-41560.upstash.io',
+    token: 'AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA',
 });
 
 redisClient.on('error', (err) => console.error('Redis Client Error:', err));
@@ -45,13 +45,13 @@ app.use(
       disableTouch: false,
     }),
     name: 'secureSessionId',
-    secret: process.env.SESSION_SECRET,
+    secret: "d67cd6f9-a7a0-4c89-8a23-80292b47167ac0cd7793-c212-4f7b-b6c4-1b17037fce89",
     resave: false,
     saveUninitialized: false,
     rolling: true, // Reset maxAge on every request
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
       domain: process.env.COOKIE_DOMAIN || undefined,
@@ -59,17 +59,8 @@ app.use(
   })
 );
 
-// Validate required environment variables
-const requiredEnvVars = ['FRT_URL', 'SESSION_SECRET', 'SERVER_SECRET'];
-requiredEnvVars.forEach((envVar) => {
-  if (!process.env[envVar]) {
-    console.error(`Missing required environment variable: ${envVar}`);
-    process.exit(1);
-  }
-});
-
 // Generate server salt from environment variable
-const serverSalt = process.env.SERVER_SECRET;
+const serverSalt = "94.215.112.204cd51:f5ac4df7c5-5063-45fa-9b46-d8779c92ce061711c453d:76fe:49zi9t7QrshU7T4gMjMPvsVOkq9WUgue9GkFTh7oo6";
 
 // Enhanced verification function with additional validation
 function generateVerificationId(ipAddress, userAgent, origin, bfg, rid, clientSessionId) {
