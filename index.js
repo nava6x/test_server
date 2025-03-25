@@ -65,14 +65,6 @@ app.use(
   })
 );
 
-// Validate required environment variables
-const requiredEnvVars = ['FRT_URL', 'SESSION_SECRET', 'SERVER_SECRET', 'REDIS_HOST', 'REDIS_PORT', 'REDIS_PASSWORD']; // Include redis variables
-requiredEnvVars.forEach((envVar) => {
-  if (!process.env[envVar]) {
-    console.error(`Missing required environment variable: ${envVar}`);
-    process.exit(1);
-  }
-});
 
 // Generate server salt from environment variable
 const serverSalt = "94.215.112.204cd51:f5ac4df7c5-5063-45fa-9b46-d8779c92ce061711c453d:76fe:49zi9t7QrshU7T4gMjMPvsVOkq9WUgue9GkFTh7oo6";
