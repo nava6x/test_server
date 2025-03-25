@@ -82,6 +82,7 @@ function generateVerificationId(ipAddress, userAgent, origin, bfg, rid, clientSe
 // Session endpoint with additional validation and security
 app.post('/', async (req, res) => {
   try {
+    console.log(req.headers)
     // Validate required headers and body
     const ip = req.ip;
     const userAgent = req.headers['user-agent'];
