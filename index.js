@@ -4,7 +4,7 @@ const cors = require('cors');
 const crypto = require('crypto');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
-const Redis = require('ioredis');
+const Redis = require('ioredis'); // Standard ioredis client
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
@@ -24,15 +24,15 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: "https://tst-frontend.onrender.com",
+  origin: process.env.FRT_URL,
   credentials: true,
 }));
 
-// Redis client with production-ready configuration
+// Upstash Redis client (using TCP Proxy)
 const redisClient = new Redis({
-    host: "relaxing-rhino-41560.upstash.io", // TCP Proxy host
-    port: "6379", // TCP Proxy port
-    password: "AaJYAAIjcDEyNjhkYjVhY2M1Yjk0ODczYTEyZjRlMzJiMmYzOTI5Y3AxMA", // TCP Proxy password
+    host: process.env.UPSTASH_REDIS_HOST, // TCP Proxy host
+    port: process.env.UPSTASH_REDIS_PORT, // TCP Proxy port
+    password: process.env.UPSTASH_REDIS_PASSWORD, // TCP Proxy password
     tls: { rejectUnauthorized: false }, // Important for secure connection
     retryStrategy: (times) => {
       const delay = Math.min(times * 50, 2000);
@@ -45,19 +45,19 @@ redisClient.on('error', (err) => console.error('Redis Client Error:', err));
 // Session configuration with additional security
 app.use(
   session({
-    store: new RedisStore({ 
+    store: new RedisStore({
       client: redisClient,
       ttl: 86400, // 1 day in seconds
       disableTouch: false,
     }),
     name: 'secureSessionId',
-    secret: "d67cd6f9-a7a0-4c89-8a23-80292b47167ac0cd7793-c212-4f7b-b6c4-1b17037fce89",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     rolling: true, // Reset maxAge on every request
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
       domain: process.env.COOKIE_DOMAIN || undefined,
@@ -65,8 +65,17 @@ app.use(
   })
 );
 
+// Validate required environment variables
+const requiredEnvVars = ['FRT_URL', 'SESSION_SECRET', 'SERVER_SECRET', 'UPSTASH_REDIS_HOST', 'UPSTASH_REDIS_PORT', 'UPSTASH_REDIS_PASSWORD'];
+requiredEnvVars.forEach((envVar) => {
+  if (!process.env[envVar]) {
+    console.error(`Missing required environment variable: ${envVar}`);
+    process.exit(1);
+  }
+});
+
 // Generate server salt from environment variable
-const serverSalt = "94.215.112.204cd51:f5ac4df7c5-5063-45fa-9b46-d8779c92ce061711c453d:76fe:49zi9t7QrshU7T4gMjMPvsVOkq9WUgue9GkFTh7oo6";
+const serverSalt = process.env.SERVER_SECRET;
 
 // Enhanced verification function with additional validation
 function generateVerificationId(ipAddress, userAgent, origin, bfg, rid, clientSessionId) {
