@@ -60,7 +60,7 @@ app.use(
       secure: true,
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      domain: process.env.COOKIE_DOMAIN || undefined,
+      domain: process.env.COOKIE_DOMAIN || undefined, // This is VERY important!
     },
   })
 );
