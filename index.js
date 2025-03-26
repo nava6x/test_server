@@ -18,6 +18,6 @@ app.get("/", (req, res) => {
     res.send(`Your IP Address is: ${forwardedIp || ip}`);
 });
 
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
