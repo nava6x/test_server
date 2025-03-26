@@ -9,13 +9,12 @@ app.use(cors({
 }));
 
 app.post('/test', (req, res) => {
-  const ip = req.ip;
-  const forwardedIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.ip;
   const { 'user-agent': userAgent, origin } = req.headers;
   const body = req.body;
   
   const data = {
-    ip: forwardedIp,
+    ip,
     userAgent,
     origin,
     body
