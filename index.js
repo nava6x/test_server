@@ -1,23 +1,29 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 5000;
-app.use(express.json());
+
+app.use(express.json())
 app.use(cors({
-    origin: ["https://tst-frontend.onrender.com", "http://localhost:3000"],
-    methods: ["GET", "POST"]
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST"]
 }));
 
-app.get("/", (req, res) => {
-    // Method 1: Using req.ip (built-in)
-    const ip = req.ip;
+app.post('/test', (req, res) => {
+  const ip = req.ip;
+  const forwardedIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const { 'user-agent': userAgent, origin } = req.headers;
+  const body = req.body;
+  
+  const data = {
+    ip: forwardedIp,
+    userAgent,
+    origin,
+    body
+  }
+  console.log(data)
+  return res.status('201');
+}); 
 
-    // Method 2: Checking headers for proxy support (if behind a reverse proxy)
-    const forwardedIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
-    res.send(`Your IP Address is: ${forwardedIp || ip}`);
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(5000, () => {
+  console.log('Running');
+}); 
