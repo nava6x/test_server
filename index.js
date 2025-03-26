@@ -9,8 +9,11 @@ app.use(cors({
 }));
 
 app.post('/', (req, res) => {
-    res.send('launched');
-    return console.log(req);
+    const ip = req.ip;
+    const userAgent = req.headers['user-agent'];
+    const origin = req.headers['origin'];
+    const { bfg, rid, clientSessionId } = req.body;
+    console.log(ip, userAgent, origin, bfg, rid, clientSessionId);
 });
 
 app.listen(PORT, () => {
