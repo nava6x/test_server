@@ -11,7 +11,11 @@ app.use(cors({
 app.get("/", (req, res) => {
     // Method 1: Using req.ip (built-in)
     const ip = req.ip;
-    console.log(ip);
+
+    // Method 2: Checking headers for proxy support (if behind a reverse proxy)
+    const forwardedIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+    res.send(`Your IP Address is: ${forwardedIp || ip}`);
 });
 
 app.listen(3000, () => {
