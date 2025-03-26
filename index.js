@@ -8,7 +8,7 @@ app.use(cors({
     methods: ["GET", "POST"]
 }));
 
-app.get('/', (req, res) => {
+app.post('/', (req, res) => {
     res.send('launched');
     return console.log(req);
 });
