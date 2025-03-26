@@ -4,12 +4,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-    origin: "https://tst-frontend.onrender.com"
+    origin: ["https://tst-frontend.onrender.com", "http://localhost:3000"],
+    methods: ["GET", "POST"]
 }));
 
 app.get('/', (req, res) => {
     res.send('launched');
-    return console.log(req.headers);
+    return console.log(req);
 });
 
 app.listen(PORT, () => {
