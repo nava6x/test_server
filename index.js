@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5000;
-
+app.use(express.json());
 app.use(cors({
     origin: ["https://tst-frontend.onrender.com", "http://localhost:3000"],
     methods: ["GET", "POST"]
