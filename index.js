@@ -8,22 +8,16 @@ app.use(cors({
     methods: ["GET", "POST"]
 }));
 
-app.post('/', (req, res) => {
+app.get("/", (req, res) => {
+    // Method 1: Using req.ip (built-in)
     const ip = req.ip;
-    const userAgent = req.headers['user-agent'];
-    const origin = req.headers['origin'];
-    const { bfg, rid, clientSessionId } = req.body;
-    const data = {
-        ip,
-        userAgent,
-        origin,
-        bfg,
-        rid,
-        clientSessionId
-    }
-    console.log(data);
+
+    // Method 2: Checking headers for proxy support (if behind a reverse proxy)
+    const forwardedIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+    res.send(`Your IP Address is: ${forwardedIp || ip}`);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+    console.log("Server running on http://localhost:3000");
 });
