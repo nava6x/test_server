@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
     const forwardedIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 
     res.send(`Your IP Address is: ${forwardedIp || ip}`);
+    console.log(`Your IP Address is: ${forwardedIp || ip}`)
 });
 
 app.listen(3000, () => {
