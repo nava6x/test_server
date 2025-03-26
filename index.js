@@ -13,7 +13,15 @@ app.post('/', (req, res) => {
     const userAgent = req.headers['user-agent'];
     const origin = req.headers['origin'];
     const { bfg, rid, clientSessionId } = req.body;
-    console.log(ip, userAgent, origin, bfg, rid, clientSessionId);
+    const data = {
+        ip,
+        userAgent,
+        origin,
+        bfg,
+        rid,
+        clientSessionId
+    }
+    console.log(data);
 });
 
 app.listen(PORT, () => {
